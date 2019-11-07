@@ -15,7 +15,7 @@ suppressMessages({
 ```
 
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, cache=TRUE}
 sourceCpp("../src/utils/test.cpp")
 ```
 
@@ -24,7 +24,7 @@ sourceCpp("../src/utils/test.cpp")
 ```{r}
 colsA <- 1000
 colsB <- 2000
-A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA)
+A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA) %>% t()
 B <- matrix(rnorm(300*colsB), nrow = 300, ncol = colsB)
 dim(A); dim(B)
 ```
@@ -33,11 +33,11 @@ dim(A); dim(B)
 
 ```{r, eval=FALSE}
 res<-list(
-`%*%`=t(A) %*% B,
-crossprd=crossprod(A, B),
-matmult=mat.mult(t(A), B),
-eMM=eigenMatMult(t(A), B),
-eMMM=eigenMapMatMult(t(A), B))
+`%*%`=A %*% B,
+# crossprd=crossprod(A, B),
+matmult=mat.mult(A, B),
+eMM=eigenMatMult(A, B),
+eMMM=eigenMapMatMult(A, B))
 
 ## all output the same matrix?
 all.identical <- function(x) length(unique(x)) == 1
@@ -48,12 +48,11 @@ all.identical(res)
 # run times
 
 ```{r}
-microbenchmark(list = list(
-    `%*%`=t(A) %*% B,
-    crossprd=crossprod(A, B),
-    matmult=mat.mult(t(A), B),
-    eMM=eigenMatMult(t(A), B),
-    eMMM=eigenMapMatMult(t(A), B)) , times = 10)
+microbenchmark(
+A %*% B,
+mat.mult(A, B),
+eigenMatMult(A, B),
+eigenMapMatMult(A, B) , times = 10)
 ```
 
 
@@ -62,7 +61,7 @@ microbenchmark(list = list(
 ```{r}
 colsA <- 3000
 colsB <- 5000
-A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA)
+A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA)%>% t()
 B <- matrix(rnorm(300*colsB), nrow = 300, ncol = colsB)
 dim(A); dim(B)
 ```
@@ -71,11 +70,11 @@ dim(A); dim(B)
 
 ```{r, eval=FALSE}
 res<-list(
-`%*%`=t(A) %*% B,
-crossprd=crossprod(A, B),
-matmult=mat.mult(t(A), B),
-eMM=eigenMatMult(t(A), B),
-eMMM=eigenMapMatMult(t(A), B))
+`%*%`=A %*% B,
+# crossprd=crossprod(A, B),
+matmult=mat.mult(A, B),
+eMM=eigenMatMult(A, B),
+eMMM=eigenMapMatMult(A, B))
 
 ## all output the same matrix?
 all.identical <- function(x) length(unique(x)) == 1
@@ -86,12 +85,11 @@ all.identical(res)
 # run times
 
 ```{r}
-microbenchmark(list = list(
-    `%*%`=t(A) %*% B,
-    crossprd=crossprod(A, B),
-    matmult=mat.mult(t(A), B),
-    eMM=eigenMatMult(t(A), B),
-    eMMM=eigenMapMatMult(t(A), B)) , times = 10)
+microbenchmark(
+A %*% B,
+mat.mult(A, B),
+eigenMatMult(A, B),
+eigenMapMatMult(A, B) , times = 10)
 ```
 
 

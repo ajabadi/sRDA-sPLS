@@ -19,7 +19,7 @@ suppressMessages({
 ```
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE, cache=TRUE}
 sourceCpp("../src/utils/test.cpp")
 ```
 
