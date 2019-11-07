@@ -1,5 +1,5 @@
 ---
-title: "RDA & PLS"
+title: "Efficient Matrix Multiplication in R"
 output: github_document
 ---
 

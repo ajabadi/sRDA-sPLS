@@ -1,4 +1,4 @@
-RDA & PLS
+Efficient Matrix Multiplication in R
 ================
 
 ``` r
