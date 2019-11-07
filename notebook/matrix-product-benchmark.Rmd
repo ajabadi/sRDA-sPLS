@@ -42,7 +42,7 @@ all.identical <- function(x) length(unique(x)) == 1
 all.identical(res)
 ```
 
-# run imes
+# run times
 
 ```{r}
 microbenchmark(list = list(

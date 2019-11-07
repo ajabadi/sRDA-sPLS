@@ -47,7 +47,7 @@ all.identical(res)
 
     ## [1] TRUE
 
-# run imes
+# run times
 
 ``` r
 microbenchmark(list = list(
