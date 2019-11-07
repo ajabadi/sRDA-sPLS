@@ -78,11 +78,11 @@ mb_out
 
     ## Unit: seconds
     ##           expr        min         lq       mean     median         uq
-    ##  eval(spls_bc) 0.02912880 0.03029687 0.03645260 0.03154139 0.03445688
-    ##   eval(rda_bc) 0.01134366 0.01246519 0.01465501 0.01331941 0.01503127
+    ##  eval(spls_bc) 0.02793077 0.02951590 0.03523783 0.03055415 0.03252126
+    ##   eval(rda_bc) 0.01119667 0.01198104 0.01477386 0.01280675 0.01450812
     ##         max neval
-    ##  0.16434809   100
-    ##  0.03015819   100
+    ##  0.14668383   100
+    ##  0.07045711   100
 
 On the small scale data `sRDA` outperforms only slightly `spls`. on
 bigger data there is a significant performance gain: on this example
@@ -145,11 +145,11 @@ mb_big
 
     ## Unit: seconds
     ##                expr       min       lq      mean    median        uq
-    ##  eval(spls_bigdata) 1.9275197 2.004221 2.0073915 2.0181713 2.0328621
-    ##   eval(rda_bigdata) 0.2920416 0.312039 0.3446932 0.3160655 0.4191816
+    ##  eval(spls_bigdata) 1.8244627 1.955587 1.9602072 1.9764135 1.9890349
+    ##   eval(rda_bigdata) 0.2835132 0.292740 0.3409012 0.2978263 0.3963763
     ##        max neval
-    ##  2.0718584    10
-    ##  0.4312935    10
+    ##  1.9930203    10
+    ##  0.4975145    10
 
 **NOTE:** Is convergence criteria comaparable?
 

@@ -4,7 +4,7 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, message="hide", results="hide"}
@@ -16,20 +16,22 @@ suppressMessages({
 
 
 ```{r, warning=FALSE, message=FALSE}
-sourceCpp("../src/test.cpp")
+sourceCpp("../src/utils/test.cpp")
 ```
 
-# matrices
+# matrices - small
 
 ```{r}
-A <- matrix(rnorm(1000000), nrow = 300, ncol = 1000)
-B <- matrix(rnorm(10000), nrow = 300, ncol = 500)
+colsA <- 1000
+colsB <- 2000
+A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA)
+B <- matrix(rnorm(300*colsB), nrow = 300, ncol = colsB)
 dim(A); dim(B)
 ```
 
 ## consistency
 
-```{r}
+```{r, eval=FALSE}
 res<-list(
 `%*%`=t(A) %*% B,
 crossprd=crossprod(A, B),
@@ -40,6 +42,7 @@ eMMM=eigenMapMatMult(t(A), B))
 ## all output the same matrix?
 all.identical <- function(x) length(unique(x)) == 1
 all.identical(res)
+#> TRUE
 ```
 
 # run times
@@ -52,4 +55,43 @@ microbenchmark(list = list(
     eMM=eigenMatMult(t(A), B),
     eMMM=eigenMapMatMult(t(A), B)) , times = 10)
 ```
+
+
+# matrices - larger
+
+```{r}
+colsA <- 3000
+colsB <- 5000
+A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA)
+B <- matrix(rnorm(300*colsB), nrow = 300, ncol = colsB)
+dim(A); dim(B)
+```
+
+## consistency
+
+```{r, eval=FALSE}
+res<-list(
+`%*%`=t(A) %*% B,
+crossprd=crossprod(A, B),
+matmult=mat.mult(t(A), B),
+eMM=eigenMatMult(t(A), B),
+eMMM=eigenMapMatMult(t(A), B))
+
+## all output the same matrix?
+all.identical <- function(x) length(unique(x)) == 1
+all.identical(res)
+#> TRUE
+```
+
+# run times
+
+```{r}
+microbenchmark(list = list(
+    `%*%`=t(A) %*% B,
+    crossprd=crossprod(A, B),
+    matmult=mat.mult(t(A), B),
+    eMM=eigenMatMult(t(A), B),
+    eMMM=eigenMapMatMult(t(A), B)) , times = 10)
+```
+
 

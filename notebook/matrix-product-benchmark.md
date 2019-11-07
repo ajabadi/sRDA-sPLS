@@ -9,26 +9,22 @@ suppressMessages({
 ```
 
 ``` r
-sourceCpp("../src/test.cpp")
+sourceCpp("../src/utils/test.cpp")
 ```
 
-# matrices
+# matrices - small
 
 ``` r
-A <- matrix(rnorm(1000000), nrow = 300, ncol = 1000)
-```
-
-    ## Warning in matrix(rnorm(1e+06), nrow = 300, ncol = 1000): data length
-    ## [1000000] is not a sub-multiple or multiple of the number of rows [300]
-
-``` r
-B <- matrix(rnorm(10000), nrow = 300, ncol = 500)
+colsA <- 1000
+colsB <- 2000
+A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA)
+B <- matrix(rnorm(300*colsB), nrow = 300, ncol = colsB)
 dim(A); dim(B)
 ```
 
     ## [1]  300 1000
 
-    ## [1] 300 500
+    ## [1]  300 2000
 
 ## consistency
 
@@ -43,9 +39,8 @@ eMMM=eigenMapMatMult(t(A), B))
 ## all output the same matrix?
 all.identical <- function(x) length(unique(x)) == 1
 all.identical(res)
+#> TRUE
 ```
-
-    ## [1] TRUE
 
 # run times
 
@@ -60,8 +55,57 @@ microbenchmark(list = list(
 
     ## Unit: nanoseconds
     ##      expr min lq mean median uq max neval
-    ##       %*%   4  5 28.8      6  6 238    10
-    ##  crossprd   4  5 17.5      5  6 129    10
-    ##   matmult   3  4 12.1      5  6  77    10
-    ##       eMM   4  4 12.6      5  6  81    10
-    ##      eMMM   4  5 22.7      5  6 181    10
+    ##       %*%   5  6 22.8    7.0  7 169    10
+    ##  crossprd   5  6 18.9    7.0  7 131    10
+    ##   matmult   6  6 46.8    7.0  7 405    10
+    ##       eMM   6  6 30.4    7.5  8 240    10
+    ##      eMMM   6  6 22.0    6.5  7 161    10
+
+# matrices - larger
+
+``` r
+colsA <- 3000
+colsB <- 5000
+A <- matrix(rnorm(300*colsA), nrow = 300, ncol = colsA)
+B <- matrix(rnorm(300*colsB), nrow = 300, ncol = colsB)
+dim(A); dim(B)
+```
+
+    ## [1]  300 3000
+
+    ## [1]  300 5000
+
+## consistency
+
+``` r
+res<-list(
+`%*%`=t(A) %*% B,
+crossprd=crossprod(A, B),
+matmult=mat.mult(t(A), B),
+eMM=eigenMatMult(t(A), B),
+eMMM=eigenMapMatMult(t(A), B))
+
+## all output the same matrix?
+all.identical <- function(x) length(unique(x)) == 1
+all.identical(res)
+#> TRUE
+```
+
+# run times
+
+``` r
+microbenchmark(list = list(
+    `%*%`=t(A) %*% B,
+    crossprd=crossprod(A, B),
+    matmult=mat.mult(t(A), B),
+    eMM=eigenMatMult(t(A), B),
+    eMMM=eigenMapMatMult(t(A), B)) , times = 10)
+```
+
+    ## Unit: nanoseconds
+    ##      expr min lq mean median uq max neval
+    ##       %*%   5  6 26.9    7.5 12 192    10
+    ##  crossprd   5  7 26.2    9.5 11 181    10
+    ##   matmult   6  7 48.9    9.5 12 406    10
+    ##       eMM   7 10 28.0   11.0 12 186    10
+    ##      eMMM   6  8 77.0    9.5 11 686    10
