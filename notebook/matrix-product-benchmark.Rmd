@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 suppressMessages({
     library(microbenchmark)
     library(Rfast)
+    library(dplyr)
 })
 ```
 
